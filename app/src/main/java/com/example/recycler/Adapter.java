@@ -1,5 +1,6 @@
 package com.example.recycler;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    //variable for ViewHolder  (WILL HAVE TO IMPORT "List" Class)
-    private List<ModelClass> userList;
+    //variables for below constructor
+    Context context;
+    ArrayList<ModelClass> wordList;
 
 
-    //constructor : Adapter      (JUST GENERATE)
-    public Adapter(List<ModelClass> userList) {
-        this.userList = userList;
+    //creating constructor for adapter class
+    public Adapter (Context context, ArrayList<ModelClass> wordList){
+
+        this.context = context;
+        this.wordList = wordList;
     }
 
 
@@ -31,8 +36,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //simple just follow through from previous code
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_design,parent, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_design, parent, false);
 
 
         //view is our variable which was declared above line
@@ -52,17 +57,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         //declare variables, give different names from model class
         //just follow through
-        int resources = userList.get(position).getImageView1();
-        String name = userList.get(position).getTextView();
-        String msg = userList.get(position).getTextView2();
-        String time = userList.get(position).getTextView3();
-        String line = userList.get(position).getTextView4();
-
-
+        String id = wordList.get(position).getName();
+        String meaning = wordList.get(position).getDefinition();
+        String usage = wordList.get(position).getExample();
+        int resources = wordList.get(position).getImageView1();
 
         //send data to holder
         //method for setData is at the bottom
-        holder.setData(resources,name,msg,time,line);
+        holder.setData(id,meaning,usage, resources);
 
     }
 
@@ -76,7 +78,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public int getItemCount() {
 
         //to inform how many items are there
-        return userList.size();
+        return wordList.size();
     }
 
 
@@ -84,46 +86,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-
-
         //assign model layout xml id into holder
         //choose any name
-        private ImageView imageView;
-        private TextView textview;
-        private TextView textview2;
-        private TextView textview3;
-        private TextView divider;
-
+        private ImageView imageView11;
+        private TextView textview11;
+        private TextView textview211;
+        private TextView textview311;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            //assign model class id
+            imageView11 = itemView.findViewById(R.id.imageview1);
+            textview11 = itemView.findViewById(R.id.tv_name);
+            textview211 = itemView.findViewById(R.id.tv_definition);
+            textview311 = itemView.findViewById(R.id.tv_example);
 
-            //assign xml id
-            imageView = itemView.findViewById(R.id.imageview1);
-            textview = itemView.findViewById(R.id.textview);
-            textview2 = itemView.findViewById(R.id.textview2);
-            textview3 = itemView.findViewById(R.id.textview3);
-            divider = itemView.findViewById(R.id.divider);
         }
 
 
 
 
         //after creating method of setData
-        public void setData(int resources, String name, String msg, String time, String line) {
+        public void setData(String id, String meaning, String usage, int resources ) {
+
 
             //set data to above variables
             //declared in onBindViewHolder
-            imageView.setImageResource(resources);
-            textview.setText(name);
-            textview2.setText(time);
-            textview3.setText(msg);
-            divider.setText(line);
 
-
-
+            textview11.setText(id);
+            textview211.setText(meaning);
+            textview311.setText(usage);
+            imageView11.setImageResource(resources);
 
         }
     }

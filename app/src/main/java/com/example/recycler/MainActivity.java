@@ -11,10 +11,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    ArrayList<ModelClass> modelClass = new ArrayList<>();
+    int[] wordImages = {R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground,R.drawable.ic_launcher_background,
+                        R.drawable.ic_launcher_background,R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_background};
+
     //declare variable
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
-    List<ModelClass> userList;
+    List<ModelClass> wordList;
     Adapter adapter;
 
 
@@ -23,44 +28,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
         //take the data
-        initData  ();
+        setUpModelClass();
 
-        //insert inside recycler view
-        initRecyclerView ();
+        //set adapter to recycler
+        Adapter adapter = new Adapter(this, modelClass);
 
-
-
-
-    }
-
-    private void initData() {
-
-        userList = new ArrayList<>();
-
-        userList.add(new ModelClass(R.drawable.ic_launcher_background, "Name", "10.45 AM", "ajhskjn", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_foreground, "Name1", "11.45 AM", "###########", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_background, "Name2", "22.45 AM", "@@@@@@@@@@", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_foreground, "Name3", "13.45 AM", "!!!!!!!!!", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_background, "Name4", "34.45 AM", "%%%%%%%%%%%", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_foreground, "Name5", "67.45 AM", "@#$%!@#$@", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_background, "Name6", "90.45 AM", "AAAAAAAAAAA", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_foreground, "Name7", "88.45 AM", "QQQQQQQQQQQ", "________________"));
-        userList.add(new ModelClass(R.drawable.ic_launcher_background, "Name8", "66.45 AM", "ZZZZZZZZZZZZZ", "________________"));
-
-
-    }
-
-
-    private void initRecyclerView() {
-
-        recyclerView = findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new Adapter (userList);
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+
+    private  void setUpModelClass()  {
+
+        String[] wordNames = getResources().getStringArray(R.array.name_of_word);
+        String[] wordDefinition = getResources().getStringArray(R.array.definition_of_word);
+        String[] wordExample = getResources().getStringArray(R.array.example_of_word);
+
+        for (int i = 0; i < wordNames.length; i++)   {
+
+            modelClass.add(new ModelClass(wordNames[i], wordDefinition[i], wordExample[i], wordImages[i]));
+        }
+
+
+    }
+
 }
